@@ -1,4 +1,22 @@
-import { Schema, model, models } from "mongoose";
+import { Document, Schema, model, models } from "mongoose";
+
+export interface IDish extends Document {
+  restaurantId: number;
+  dishId: number;
+  catalogId: number;
+  groupName?: string;
+  name: string;
+  imageUrl: string;
+  description?: string;
+  price: number;
+  discountPrice?: number;
+  totalOrder: number;
+  listingStatus: boolean;
+  ratingGood?: number;
+  totalLike?: number;
+  rank?: number;
+  isHidden?: boolean;
+}
 
 const DishSchema = new Schema({
   restaurantId: { type: Number, required: true },
