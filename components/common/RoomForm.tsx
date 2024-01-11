@@ -21,6 +21,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { handleError } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { createRoom } from "@/lib/actions/room.actions";
 
 type RoomFormProps = {
   userId: string;
@@ -28,6 +31,7 @@ type RoomFormProps = {
 };
 
 const RoomForm = ({ userId, type }: RoomFormProps) => {
+  const router = useRouter();
   const initialValues = roomDefaultValues;
   const [startDate, setStartDate] = useState(new Date());
 
@@ -36,8 +40,23 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
     defaultValues: initialValues,
   });
 
-  function onSubmit(values: z.infer<typeof roomFormSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof roomFormSchema>) {
+    if (type === "Create") {
+      try {
+        const newRoom = await createRoom({
+          room: { ...values },
+          userId: userId,
+          path: "/profile",
+        });
+
+        if (newRoom) {
+          form.reset();
+          router.push(`/rooms/${newRoom._id}`);
+        }
+      } catch (error) {
+        handleError(error);
+      }
+    }
   }
   return (
     <Form {...form}>
@@ -122,7 +141,7 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Create Room</Button>
       </form>
     </Form>
   );

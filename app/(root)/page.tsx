@@ -9,10 +9,10 @@ export default function Home() {
           <div className="flex flex-col justify-center gap-8">
             <h1 className="h1-bold">Order ShopeeFood: Together as a Group!</h1>
             <p className="p-regular-20 md:p-regular-24">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora
-              officia porro enim eaque magni nostrum inventore totam suscipit,
-              minus quaerat quibusdam rem at dolor quos iure placeat excepturi,
-              expedita aperiam?
+              Welcome to Group Order ShopeeFood, where you and your friends can
+              enjoy the convenience of group ordering on ShopeeFood! 🍔🥡 Create
+              a Room, gather your foodie squad, and embark on a delightful
+              culinary journey togethe
             </p>
             <Button size="lg" asChild className="button w-full sm:w-fit">
               <Link href="#rooms">Create Room</Link>

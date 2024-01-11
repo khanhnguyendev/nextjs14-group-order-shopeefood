@@ -98,6 +98,17 @@ export function removeKeysFromQuery({
     { skipNull: true }
   );
 }
+export const extractRestaurantUrl = (url: string) => {
+  const regex = /\/([^/]+\/[^/?]+)(\?|$)/;
+  const match = url.match(regex);
+
+  if (match && match[1]) {
+    return match[1];
+  }
+
+  // If no match is found, return null or handle accordingly
+  return null;
+};
 
 export const handleError = (error: unknown) => {
   console.error(error);

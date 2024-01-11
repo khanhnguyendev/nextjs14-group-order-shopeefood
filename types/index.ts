@@ -16,19 +16,12 @@ export type UpdateUserParams = {
 };
 
 // ====== EVENT PARAMS
-export type CreateEventParams = {
+export type CreateRoomParams = {
   userId: string;
-  event: {
+  room: {
     title: string;
-    description: string;
-    location: string;
-    imageUrl: string;
-    startDateTime: Date;
-    endDateTime: Date;
-    categoryId: string;
-    price: string;
-    isFree: boolean;
-    url: string;
+    expiredAt: Date;
+    restaurantUrl: string;
   };
   path: string;
 };
