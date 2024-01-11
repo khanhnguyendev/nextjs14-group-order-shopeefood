@@ -1,22 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { roomFormSchema } from "@/lib/validator";
 import * as z from "zod";
+import DatePicker from "react-datepicker";
+
+import { roomFormSchema } from "@/lib/validator";
+
+import { roomDefaultValues } from "@/constants";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { roomDefaultValues } from "@/constants";
+import Image from "next/image";
 
 type RoomFormProps = {
   userId: string;
@@ -25,6 +29,7 @@ type RoomFormProps = {
 
 const RoomForm = ({ userId, type }: RoomFormProps) => {
   const initialValues = roomDefaultValues;
+  const [startDate, setStartDate] = useState(new Date());
 
   const form = useForm<z.infer<typeof roomFormSchema>>({
     resolver: zodResolver(roomFormSchema),
@@ -58,6 +63,65 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
             )}
           />
         </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="expiredAt"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                    <Image
+                      src="/assets/icons/calendar.svg"
+                      alt="calendar"
+                      width={24}
+                      height={24}
+                      className="filter-grey"
+                    />
+                    <p className="ml-3 whitespace-nowrap text-grey-600">
+                      Expired At:
+                    </p>
+                    <DatePicker
+                      selected={field.value}
+                      onChange={(date: Date) => field.onChange(date)}
+                      showTimeSelect
+                      timeInputLabel="Time:"
+                      dateFormat="MM/dd/yyyy h:mm aa"
+                      wrapperClassName="datePicker"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={form.control}
+          name="restaurantUrl"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormControl>
+                <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                  <Image
+                    src="/assets/icons/link.svg"
+                    alt="link"
+                    width={24}
+                    height={24}
+                  />
+
+                  <Input
+                    placeholder="ShoppeFood URL"
+                    {...field}
+                    className="input-field"
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
