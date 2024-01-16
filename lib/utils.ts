@@ -114,3 +114,17 @@ export const handleError = (error: unknown) => {
   console.error(error);
   throw new Error(typeof error === "string" ? error : JSON.stringify(error));
 };
+
+// String price to Number
+// 26,000đ => 26000
+export const priceParser = (strPrice: string) => {
+  return parseInt(strPrice.replace(/[^\d]/g, ""));
+};
+
+// Get Price with format string
+export const formatPriceVN = (numPrice: number) => {
+  return numPrice.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+};

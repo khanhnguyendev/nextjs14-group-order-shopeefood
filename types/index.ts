@@ -15,7 +15,7 @@ export type UpdateUserParams = {
   photo: string;
 };
 
-// ====== EVENT PARAMS
+// ====== Room PARAMS
 export type CreateRoomParams = {
   userId: string;
   room: {
@@ -24,6 +24,19 @@ export type CreateRoomParams = {
     restaurantUrl: string;
   };
   path: string;
+};
+
+// ======= Restaurant PARAMS
+export type CreateRestaurantParams = {
+  roomId: string;
+  restaurantId: string;
+  deliveryId: string;
+};
+
+// ======== Dishes PARAMS
+export type CreateDishesParams = {
+  restaurantId: string;
+  deliveryId: string;
 };
 
 export type UpdateEventParams = {
