@@ -45,7 +45,7 @@ export const createRoom = async ({ room, userId, path }: CreateRoomParams) => {
 
     console.log("Room created and saved successfully!");
 
-    return JSON.parse(JSON.stringify("newRoom"));
+    return JSON.parse(JSON.stringify(newRoom));
   } catch (error) {
     handleError(error);
   }
