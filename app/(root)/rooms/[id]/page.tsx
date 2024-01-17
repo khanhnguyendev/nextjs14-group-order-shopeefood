@@ -87,8 +87,8 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
         </div>
       </section>
       {/* Menu food */}
-      <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
-        <h2 className="h2-bold text-red-600">Menu</h2>
+      <section className="wrapper my-8 flex flex-col gap-8 md:gap-12 bg-slate-50 bg-contain rounded-2xl">
+        <h2 className="h2-bold text-red-600 ml-5">Menu</h2>
 
         <Collection dishes={dishes} />
       </section>

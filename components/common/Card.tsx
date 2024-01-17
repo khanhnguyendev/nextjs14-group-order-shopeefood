@@ -1,7 +1,14 @@
 import { IDish } from "@/lib/database/models/dish.model";
-import { getHighestResolutionPhoto } from "@/lib/utils";
+import { formatPriceVN, getHighestResolutionPhoto } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "../ui/button";
 
 type CardProps = {
   dish: IDish;
@@ -11,21 +18,34 @@ const Card = ({ dish }: CardProps) => {
   // const { sessionClaims } = auth();
   // const userId = sessionClaims?.userId as string;
 
-  // const dishPhoto = getHighestResolutionPhoto(dish.photos);
-  const dishPhoto = dish.photos[4];
+  const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
   return (
-    <div className="group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
-      <Image src={dishPhoto.value} height={400} width={400} alt={dish.name} />
+    <div
+      className="group relative flex min-h-[280px] w-full max-w-[350px] 
+    flex-col overflow-hidden rounded-xl bg-white shadow-xl transition-all hover:shadow-lg md:min-h-[338px]
+    "
+    >
+      <Image src={dishPhoto.value} height={350} width={350} alt={dish.name} />
 
-      <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
-        <div className="flex gap-2">
-          <span className="p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
-            {dish.price}
-          </span>
-          <p className="p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
-            {dish.groupName}
-          </p>
+      <div className="flex min-h-[150px] flex-col gap-2 p-2 md:gap-3">
+        <div>
+          <Accordion type="single" collapsible>
+            <AccordionItem
+              value="item-1"
+              className="flex flex-col justify-center items-center"
+            >
+              <AccordionTrigger>
+                <h4 className="h4-bold">{dish.name}</h4>
+              </AccordionTrigger>
+              <AccordionContent className="p-regular-12 text-grey-600">
+                {dish.description ? dish.description : "No Description"}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <div className="flex justify-center mt-3">
+          <Button variant="destructive">{formatPriceVN(dish.price)}</Button>
         </div>
       </div>
     </div>
