@@ -7,9 +7,9 @@ const PhotoSchema = new Schema({
 });
 
 export interface IPhoto {
-  width?: number;
-  value?: string;
-  height?: number;
+  width: number;
+  value: string;
+  height: number;
 }
 
 export interface IDish extends Document {
