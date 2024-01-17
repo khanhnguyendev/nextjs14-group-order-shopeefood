@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["images.foody.vn"],
+    // domains: ["images.foody.vn"],
     remotePatterns: [
       {
         protocol: "https",

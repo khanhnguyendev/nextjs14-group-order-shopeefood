@@ -4,6 +4,7 @@ import { CreateDishesParams } from "@/types";
 import { handleError, priceParser } from "../utils";
 import { getDishesWeb } from "../fetcher/shopeefood";
 import Dish, { IDish } from "../database/models/dish.model";
+import { connectToDatabase } from "../database";
 
 export const createDishes = async ({
   restaurantId,
@@ -31,7 +32,7 @@ export const createDishes = async ({
         dishId: dish.id,
         groupName: menuInfo.dish_type_name,
         name: dish.name,
-        imageUrl: dish.photos[0].value,
+        photos: dish.photos,
         description: dish.description,
         price: priceParser(dish.price.text),
         discountPrice:
@@ -50,6 +51,23 @@ export const createDishes = async ({
     );
 
     console.log("Dishes created and saved successfully!");
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getDishesByRestaurantId = async (restaurantId: string) => {
+  try {
+    await connectToDatabase();
+    const dishes = await Dish.find({
+      restaurantId: restaurantId,
+    });
+    if (!dishes) {
+      throw new Error(
+        `There are no dishes with this restaurant id: [${restaurantId}]`
+      );
+    }
+    return JSON.parse(JSON.stringify(dishes));
   } catch (error) {
     handleError(error);
   }

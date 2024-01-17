@@ -4,6 +4,8 @@ import { getRestaurantDetail } from "@/lib/actions/restaurant.actions";
 import { getRoomById } from "@/lib/actions/room.actions";
 import { SearchParamProps } from "@/types";
 import { formatDateTime, getHighestResolutionPhoto } from "@/lib/utils";
+import { getDishesByRestaurantId } from "@/lib/actions/dish.actions";
+import Collection from "@/components/common/Collection";
 
 const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
   const room = await getRoomById(id);
@@ -11,6 +13,7 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
     room.restaurantId,
     room.deliveryId
   );
+  const dishes = await getDishesByRestaurantId(room.restaurantId);
 
   const resPhoto = getHighestResolutionPhoto(restaurant.photos);
 
@@ -82,6 +85,12 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
             </div>
           </div>
         </div>
+      </section>
+      {/* Menu food */}
+      <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
+        <h2 className="h2-bold text-red-600">Menu</h2>
+
+        <Collection dishes={dishes} />
       </section>
     </>
   );
