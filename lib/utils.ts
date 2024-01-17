@@ -3,7 +3,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
 
-import { UrlQueryParams, RemoveUrlQueryParams } from "@/types";
+import { UrlQueryParams, RemoveUrlQueryParams, Photo } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -127,4 +127,17 @@ export const formatPriceVN = (numPrice: number) => {
     style: "currency",
     currency: "VND",
   });
+};
+
+export const getHighestResolutionPhoto = (photos: Photo[]): Photo => {
+  // if (!photos || photos.length === 0) {
+  //   // Return no photo url if the input array is empty or undefined
+  //   return "https://images.foody.vn/res/g119/1180275/prof/s640x400/foody-upload-api-foody-mobile-co-d4eaea3f-230808123448.jpeg";
+  // }
+
+  // Sort the photos array by width in descending order
+  const sortedPhotos = photos.sort((a, b) => b.width - a.width);
+
+  // The URL of the photo with the highest resolution will be the first element after sorting
+  return sortedPhotos[0];
 };

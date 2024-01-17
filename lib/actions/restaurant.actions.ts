@@ -4,7 +4,9 @@ import { CreateRestaurantParams } from "@/types";
 import Restaurant from "../database/models/restaurant.model";
 import { handleError } from "../utils";
 import { getDetail } from "../fetcher/shopeefood";
+import { connectToDatabase } from "../database";
 
+// CREATE
 export const createRestaurant = async ({
   restaurantId,
   deliveryId,
@@ -42,4 +44,23 @@ export const createRestaurant = async ({
   } catch (error) {
     handleError(error);
   }
+};
+
+// Get Restaurant information
+export const getRestaurantDetail = async (
+  restaurantId: string,
+  deliveryId: string
+) => {
+  try {
+    await connectToDatabase();
+
+    const restaurant = await Restaurant.findOne({
+      restaurantId: Number(restaurantId),
+      deliveryId: Number(deliveryId),
+    });
+
+    if (!restaurant) throw new Error("Restaurant not found");
+
+    return JSON.parse(JSON.stringify(restaurant));
+  } catch (error) {}
 };

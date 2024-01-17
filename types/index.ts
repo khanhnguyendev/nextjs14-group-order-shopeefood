@@ -153,3 +153,9 @@ export type SearchParamProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export type Photo = {
+  width: number;
+  value: string;
+  height: number;
+};

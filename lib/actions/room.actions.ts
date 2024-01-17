@@ -9,6 +9,7 @@ import { createRestaurant } from "./restaurant.actions";
 import { createDishes } from "./dish.actions";
 import Room from "../database/models/room.model";
 
+// CREATE
 export const createRoom = async ({ room, userId, path }: CreateRoomParams) => {
   try {
     console.log(`Creating room from [${room.restaurantUrl}] by [${userId}]...`);
@@ -46,6 +47,21 @@ export const createRoom = async ({ room, userId, path }: CreateRoomParams) => {
     console.log("Room created and saved successfully!");
 
     return JSON.parse(JSON.stringify(newRoom));
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// GET ROOM BY ID
+export const getRoomById = async (roomId: string) => {
+  try {
+    await connectToDatabase();
+
+    const room = await Room.findById(roomId);
+
+    if (!room) throw new Error("Room not found");
+
+    return JSON.parse(JSON.stringify(room));
   } catch (error) {
     handleError(error);
   }
