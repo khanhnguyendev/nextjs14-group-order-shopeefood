@@ -5,7 +5,9 @@ import { getRoomById } from "@/lib/actions/room.actions";
 import { SearchParamProps } from "@/types";
 import { formatDateTime, getHighestResolutionPhoto } from "@/lib/utils";
 import { getDishesByRestaurantId } from "@/lib/actions/dish.actions";
-import Collection from "@/components/common/Collection";
+import MenuCollection from "@/components/MenuCollection";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OrderCollection from "@/components/OrderCollection";
 
 const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
   const room = await getRoomById(id);
@@ -14,11 +16,11 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
     room.deliveryId
   );
   const dishes = await getDishesByRestaurantId(room.restaurantId);
-
   const resPhoto = getHighestResolutionPhoto(restaurant.photos);
 
   return (
     <>
+      {/* RESTAURANT INFO */}
       <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain">
         <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
           <Image
@@ -86,11 +88,24 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
           </div>
         </div>
       </section>
-      {/* Menu food */}
-      <section className="wrapper my-8 flex flex-col gap-8 md:gap-12 bg-slate-50 bg-contain rounded-2xl">
-        <h2 className="h2-bold text-red-600 ml-5">Menu</h2>
-
-        <Collection dishes={dishes} />
+      {/* MENU & ORDER */}
+      <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
+        <Tabs defaultValue="tab-menu">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="tab-menu">Menu</TabsTrigger>
+            <TabsTrigger value="tab-order">Order</TabsTrigger>
+          </TabsList>
+          <div className="mt-5 bg-slate-100 p-5 bg-contain rounded-2xl">
+            {/* MENU */}
+            <TabsContent value="tab-menu">
+              <MenuCollection dishes={dishes} />
+            </TabsContent>
+            {/* ORDER */}
+            <TabsContent value="tab-order">
+              <OrderCollection />
+            </TabsContent>
+          </div>
+        </Tabs>
       </section>
     </>
   );

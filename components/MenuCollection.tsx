@@ -1,6 +1,6 @@
 import React from "react";
 import { IDish } from "@/lib/database/models/dish.model";
-import Card from "./Card";
+import Card from "./common/Card";
 
 type CollectionProps = {
   dishes: IDish[];
