@@ -1,5 +1,5 @@
 import { IDish } from "@/lib/database/models/dish.model";
-import { formatPriceVN, getHighestResolutionPhoto } from "@/lib/utils";
+import { getHighestResolutionPhoto } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 import {
@@ -8,15 +8,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "../ui/button";
+import { auth } from "@clerk/nextjs";
+import { DialogOrder } from "./DialogOrder";
 
 type CardProps = {
   dish: IDish;
 };
 
 const Card = ({ dish }: CardProps) => {
-  // const { sessionClaims } = auth();
-  // const userId = sessionClaims?.userId as string;
+  const { sessionClaims } = auth();
+  const userId = sessionClaims?.userId as string;
 
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
@@ -45,7 +46,7 @@ const Card = ({ dish }: CardProps) => {
           </Accordion>
         </div>
         <div className="flex justify-center mt-3">
-          <Button variant="destructive">{formatPriceVN(dish.price)}</Button>
+          <DialogOrder dish={dish} userId={userId} />
         </div>
       </div>
     </div>
