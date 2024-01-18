@@ -10,7 +10,7 @@ import { createDishes } from "./dish.actions";
 import Room from "../database/models/room.model";
 
 // CREATE
-export const createRoom = async ({ room, userId, path }: CreateRoomParams) => {
+export const createRoom = async ({ room, userId }: CreateRoomParams) => {
   try {
     console.log(`Creating room from [${room.restaurantUrl}] by [${userId}]...`);
 
@@ -27,7 +27,9 @@ export const createRoom = async ({ room, userId, path }: CreateRoomParams) => {
     const _deliveryId = restaurantInfo?.reply.delivery_id;
 
     const newRoom = await Room.create({
-      ...room,
+      title: room.title,
+      expiredAt: room.expiredAt,
+      restaurantUrl: room.restaurantUrl,
       hostedBy: userId as string,
       restaurantId: _restaurantId,
       deliveryId: _deliveryId,

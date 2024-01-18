@@ -24,6 +24,7 @@ import Image from "next/image";
 import { handleError } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { createRoom } from "@/lib/actions/room.actions";
+import { toast } from "sonner";
 
 type RoomFormProps = {
   userId: string;
@@ -43,15 +44,16 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
   async function onSubmit(values: z.infer<typeof roomFormSchema>) {
     if (type === "Create") {
       try {
+        toast("Create new room...");
         const newRoom = await createRoom({
           room: { ...values },
           userId: userId,
-          path: "/profile",
         });
 
         if (newRoom) {
           form.reset();
           router.push(`/rooms/${newRoom._id}`);
+          toast("Room has been created.");
         }
       } catch (error) {
         handleError(error);

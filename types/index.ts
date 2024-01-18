@@ -23,7 +23,6 @@ export type CreateRoomParams = {
     expiredAt: Date;
     restaurantUrl: string;
   };
-  path: string;
 };
 
 // ======= Restaurant PARAMS

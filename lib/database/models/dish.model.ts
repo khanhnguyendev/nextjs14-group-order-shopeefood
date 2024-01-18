@@ -30,7 +30,7 @@ export interface IDish extends Document {
 
 const DishSchema = new Schema({
   restaurantId: { type: Number, required: true, index: true },
-  dishId: { type: Number, required: true, unique: true },
+  dishId: { type: Number, required: true },
   groupName: { type: String, required: true },
   name: { type: String, required: true },
   photos: [PhotoSchema],
