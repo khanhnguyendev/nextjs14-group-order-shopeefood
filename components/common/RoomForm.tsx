@@ -44,7 +44,7 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
   async function onSubmit(values: z.infer<typeof roomFormSchema>) {
     if (type === "Create") {
       try {
-        toast("Create new room...");
+        toast.loading("Create new room...");
         const newRoom = await createRoom({
           room: { ...values },
           userId: userId,
@@ -53,7 +53,7 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
         if (newRoom) {
           form.reset();
           router.push(`/rooms/${newRoom._id}`);
-          toast("Room has been created.");
+          toast.success("Room has been created.");
         }
       } catch (error) {
         handleError(error);
