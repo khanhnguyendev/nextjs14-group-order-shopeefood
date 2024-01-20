@@ -4,10 +4,10 @@ import { getRestaurantDetail } from "@/lib/actions/restaurant.actions";
 import { getRoomById } from "@/lib/actions/room.actions";
 import { SearchParamProps } from "@/types";
 import { formatDateTime, getHighestResolutionPhoto } from "@/lib/utils";
-import { getDishesByRestaurantId } from "@/lib/actions/dish.actions";
 import MenuCollection from "@/components/MenuCollection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OrderCollection from "@/components/OrderCollection";
+import { getDishesWeb } from "@/lib/fetcher/shopeefood/web.api";
 
 const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
   const room = await getRoomById(id);
@@ -15,8 +15,8 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
     room.restaurantId,
     room.deliveryId
   );
-  const dishes = await getDishesByRestaurantId(room.restaurantId);
   const resPhoto = getHighestResolutionPhoto(restaurant.photos);
+  const menuList = await getDishesWeb(room.deliveryId);
 
   return (
     <>
@@ -98,7 +98,10 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
           <div className="mt-5 bg-slate-100 p-5 bg-contain rounded-2xl">
             {/* MENU */}
             <TabsContent value="tab-menu">
-              <MenuCollection restaurantId={room.restaurantId} dishes={dishes} />
+              <MenuCollection
+                restaurantId={room.restaurantId}
+                menuList={menuList}
+              />
             </TabsContent>
             {/* ORDER */}
             <TabsContent value="tab-order">

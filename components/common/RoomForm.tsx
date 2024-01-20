@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -34,7 +33,6 @@ type RoomFormProps = {
 const RoomForm = ({ userId, type }: RoomFormProps) => {
   const router = useRouter();
   const initialValues = roomDefaultValues;
-  const [startDate, setStartDate] = useState(new Date());
 
   const form = useForm<z.infer<typeof roomFormSchema>>({
     resolver: zodResolver(roomFormSchema),

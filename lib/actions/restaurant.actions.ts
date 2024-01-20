@@ -3,7 +3,7 @@
 import { CreateRestaurantParams } from "@/types";
 import Restaurant from "../database/models/restaurant.model";
 import { handleError } from "../utils";
-import { getDetail } from "../fetcher/shopeefood";
+import { getDetail } from "../fetcher/shopeefood/web.api";
 import { connectToDatabase } from "../database";
 
 // CREATE

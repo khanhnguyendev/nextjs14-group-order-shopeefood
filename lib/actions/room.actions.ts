@@ -4,7 +4,7 @@ import { CreateRoomParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
 import User from "../database/models/user.model";
-import { getFromUrl } from "../fetcher/shopeefood";
+import { getFromUrl } from "../fetcher/shopeefood/web.api";
 import { createRestaurant } from "./restaurant.actions";
 import { createDishes } from "./dish.actions";
 import Room from "../database/models/room.model";
@@ -41,10 +41,10 @@ export const createRoom = async ({ room, userId }: CreateRoomParams) => {
       deliveryId: _deliveryId,
     });
 
-    await createDishes({
-      restaurantId: _restaurantId,
-      deliveryId: _deliveryId,
-    });
+    // await createDishes({
+    //   restaurantId: _restaurantId,
+    //   deliveryId: _deliveryId,
+    // });
 
     console.log("Room created and saved successfully!");
 

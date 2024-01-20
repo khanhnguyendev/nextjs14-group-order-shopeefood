@@ -1,25 +1,32 @@
 import React from "react";
-import { IDish } from "@/lib/database/models/dish.model";
 import Card from "./common/Card";
+import { Dish, MenuInfo } from "@/types/shopeefood.api";
 
-type CollectionProps = {
+type MenuCollectionProps = {
   restaurantId: string;
-  dishes: IDish[];
+  menuList?: MenuInfo[];
 };
 
-const Collection = ({ restaurantId, dishes }: CollectionProps) => {
+const MenuCollection: React.FC<MenuCollectionProps> = ({
+  restaurantId,
+  menuList = [],
+}) => {
+  const renderDishes = () => {
+    return menuList.map((menu: MenuInfo) => {
+      return menu.dishes.map((dish: Dish) => (
+        <li key={dish.id} className="flex justify-center">
+          <Card restaurantId={restaurantId} dish={dish} />
+        </li>
+      ));
+    });
+  };
+
   return (
     <>
-      {dishes.length > 0 ? (
+      {menuList.length > 0 ? (
         <div className="flex flex-col items-center gap-10">
           <ul className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-10">
-            {dishes.map((dish) => {
-              return (
-                <li key={dish._id} className="flex justify-center">
-                  <Card restaurantId={restaurantId} dish={dish} />
-                </li>
-              );
-            })}
+            {renderDishes()}
           </ul>
         </div>
       ) : (
@@ -31,4 +38,4 @@ const Collection = ({ restaurantId, dishes }: CollectionProps) => {
   );
 };
 
-export default Collection;
+export default MenuCollection;

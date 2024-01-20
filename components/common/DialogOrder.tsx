@@ -10,20 +10,20 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { IDish } from "@/lib/database/models/dish.model";
-import { formatPriceVN, getHighestResolutionPhoto } from "@/lib/utils";
+import { getHighestResolutionPhoto } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import Image from "next/image";
 import { ToppingGroup } from "./ToppingGroup";
+import { Dish } from "@/types/shopeefood.api";
 
 type DialogOrderProps = {
   restaurantId: string;
-  dish: IDish;
+  dish: Dish;
   userId: string;
 };
 
 export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
-  const dishPrice = formatPriceVN(dish.price);
+  const dishPrice = dish.price.text;
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
   return (
@@ -40,7 +40,7 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
             <Separator className="my-2" />
             <div className="flex items-center gap-5 text-sm mb-2">
               <Image src={dishPhoto.value} width={100} height={100} alt="" />
-                <p>{dish.description}</p>
+              <p>{dish.description}</p>
             </div>
             <div>
               <ToppingGroup />
