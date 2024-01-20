@@ -98,3 +98,25 @@ export const getDishesWeb = async (deliveryId: string) => {
     handleError(error);
   }
 };
+
+// API Mobile
+// Get topping by dishId
+export const getToppingApp = async (restaurantId: string, dishId: string) => {
+  try {
+    const API = `${BASE_URL}/v5/buyer/store/dish/option_groups?restaurant_id=${restaurantId}&dish_id=${dishId}`
+
+    const response = await fetch(API, {
+      method: "GET",
+      headers: API_HEADERS,
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not OK");
+    }
+    console.log(await response.json())
+
+    return await response.json();
+  } catch (error) {
+    handleError(error);
+  }
+}

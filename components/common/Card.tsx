@@ -12,10 +12,11 @@ import { auth } from "@clerk/nextjs";
 import { DialogOrder } from "./DialogOrder";
 
 type CardProps = {
+  restaurantId: string;
   dish: IDish;
 };
 
-const Card = ({ dish }: CardProps) => {
+const Card = ({ restaurantId, dish }: CardProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
 
@@ -46,7 +47,7 @@ const Card = ({ dish }: CardProps) => {
           </Accordion>
         </div>
         <div className="flex justify-center mt-3">
-          <DialogOrder dish={dish} userId={userId} />
+          <DialogOrder restaurantId={restaurantId} dish={dish} userId={userId} />
         </div>
       </div>
     </div>

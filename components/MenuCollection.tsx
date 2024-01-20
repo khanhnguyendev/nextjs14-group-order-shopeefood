@@ -3,10 +3,11 @@ import { IDish } from "@/lib/database/models/dish.model";
 import Card from "./common/Card";
 
 type CollectionProps = {
+  restaurantId: string;
   dishes: IDish[];
 };
 
-const Collection = ({ dishes }: CollectionProps) => {
+const Collection = ({ restaurantId, dishes }: CollectionProps) => {
   return (
     <>
       {dishes.length > 0 ? (
@@ -15,7 +16,7 @@ const Collection = ({ dishes }: CollectionProps) => {
             {dishes.map((dish) => {
               return (
                 <li key={dish._id} className="flex justify-center">
-                  <Card dish={dish} />
+                  <Card restaurantId={restaurantId} dish={dish} />
                 </li>
               );
             })}

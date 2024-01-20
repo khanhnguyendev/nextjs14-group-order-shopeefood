@@ -17,11 +17,12 @@ import Image from "next/image";
 import { ToppingGroup } from "./ToppingGroup";
 
 type DialogOrderProps = {
+  restaurantId: string;
   dish: IDish;
   userId: string;
 };
 
-export function DialogOrder({ dish, userId }: DialogOrderProps) {
+export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const dishPrice = formatPriceVN(dish.price);
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
@@ -39,9 +40,7 @@ export function DialogOrder({ dish, userId }: DialogOrderProps) {
             <Separator className="my-2" />
             <div className="flex items-center gap-5 text-sm mb-2">
               <Image src={dishPhoto.value} width={100} height={100} alt="" />
-              <div>
                 <p>{dish.description}</p>
-              </div>
             </div>
             <div>
               <ToppingGroup />

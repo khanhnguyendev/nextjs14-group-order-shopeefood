@@ -98,7 +98,7 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
           <div className="mt-5 bg-slate-100 p-5 bg-contain rounded-2xl">
             {/* MENU */}
             <TabsContent value="tab-menu">
-              <MenuCollection dishes={dishes} />
+              <MenuCollection restaurantId={room.restaurantId} dishes={dishes} />
             </TabsContent>
             {/* ORDER */}
             <TabsContent value="tab-order">
