@@ -42,7 +42,7 @@ export const getRestaurantDetail = async (restaurantId: string) => {
   try {
     // id_type: 1 => APP
     // id_type: 2 => WEB
-    const API = `${BASE_URL}/delivery/get_detail?id_type=1&request_id=${restaurantId}1`;
+    const API = `${BASE_URL}/delivery/get_detail?id_type=1&request_id=${restaurantId}`;
 
     const response = await fetch(API, {
       headers: API_HEADERS,
