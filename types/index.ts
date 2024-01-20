@@ -1,5 +1,5 @@
 import { IRoom } from "@/lib/database/models/room.model";
-import { Restaurant } from "./shopeefood.type";
+import { MenuInfo, Restaurant } from "./shopeefood.type";
 
 // ====== USER PARAMS
 export type CreateUserParams = {
@@ -160,4 +160,10 @@ export type SearchParamProps = {
 export type RestaurantDetailProps = {
   room: IRoom;
   restaurant: Restaurant;
+};
+
+// ====== MENU & ORDER PROPS
+export type MenuOrderProps = {
+  restaurantId: number;
+  menuList: MenuInfo[];
 };
