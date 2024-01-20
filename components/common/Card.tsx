@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/accordion";
 import { auth } from "@clerk/nextjs";
 import { DialogOrder } from "./DialogOrder";
-import { Dish } from "@/types/shopeefood.api";
+import { Dish } from "@/types/shopeefood.type";
 
 type CardProps = {
-  restaurantId: string;
+  restaurantId: number;
   dish: Dish;
 };
 

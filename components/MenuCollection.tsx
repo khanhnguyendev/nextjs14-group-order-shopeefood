@@ -1,9 +1,9 @@
 import React from "react";
 import Card from "./common/Card";
-import { Dish, MenuInfo } from "@/types/shopeefood.api";
+import { Dish, MenuInfo } from "@/types/shopeefood.type";
 
 type MenuCollectionProps = {
-  restaurantId: string;
+  restaurantId: number;
   menuList?: MenuInfo[];
 };
 

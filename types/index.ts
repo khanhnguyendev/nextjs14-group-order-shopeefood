@@ -1,3 +1,6 @@
+import { IRoom } from "@/lib/database/models/room.model";
+import { Restaurant } from "./shopeefood.type";
+
 // ====== USER PARAMS
 export type CreateUserParams = {
   clerkId: string;
@@ -153,8 +156,8 @@ export type SearchParamProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export type Photo = {
-  width: number;
-  value: string;
-  height: number;
+// ====== RESTAURANT DETAIL PROPS
+export type RestaurantDetailProps = {
+  room: IRoom;
+  restaurant: Restaurant;
 };

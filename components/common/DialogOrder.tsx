@@ -14,10 +14,10 @@ import { getHighestResolutionPhoto } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import Image from "next/image";
 import { ToppingGroup } from "./ToppingGroup";
-import { Dish } from "@/types/shopeefood.api";
+import { Dish } from "@/types/shopeefood.type";
 
 type DialogOrderProps = {
-  restaurantId: string;
+  restaurantId: number;
   dish: Dish;
   userId: string;
 };

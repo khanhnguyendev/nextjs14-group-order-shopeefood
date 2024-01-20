@@ -1,4 +1,4 @@
-import { MenuInfo } from "@/types/shopeefood.api";
+import { MenuInfo, Restaurant } from "@/types/shopeefood.type";
 import { extractRestaurantUrl, handleError } from "../../utils";
 
 const BASE_URL = "https://gappapi.deliverynow.vn/api";
@@ -29,18 +29,20 @@ export const getFromUrl = async (restaurantUrl: string) => {
       throw new Error("Network response was not OK");
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    return data.reply;
   } catch (error) {
     handleError(error);
   }
 };
 
 // Get restaurant detail by restaurantId
-export const getDetail = async (restaurantId: string) => {
+export const getRestaurantDetail = async (restaurantId: string) => {
   try {
     // id_type: 1 => APP
     // id_type: 2 => WEB
-    const API = `${BASE_URL}/delivery/get_detail?id_type=1&request_id=${restaurantId}`;
+    const API = `${BASE_URL}/delivery/get_detail?id_type=1&request_id=${restaurantId}1`;
 
     const response = await fetch(API, {
       headers: API_HEADERS,
@@ -49,8 +51,10 @@ export const getDetail = async (restaurantId: string) => {
     if (!response.ok) {
       throw new Error("Network response was not OK");
     }
+    const data = await response.json();
+    if (!data.reply) return;
 
-    return await response.json();
+    return data.reply.delivery_detail;
   } catch (error) {
     handleError(error);
   }
