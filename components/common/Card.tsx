@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/accordion";
 import { auth } from "@clerk/nextjs";
 import { DialogOrder } from "./DialogOrder";
+import { Dish } from "@/types/shopeefood.type";
 
 type CardProps = {
-  restaurantId: string;
-  dish: IDish;
+  restaurantId: number;
+  dish: Dish;
 };
 
 const Card = ({ restaurantId, dish }: CardProps) => {
@@ -47,7 +48,11 @@ const Card = ({ restaurantId, dish }: CardProps) => {
           </Accordion>
         </div>
         <div className="flex justify-center mt-3">
-          <DialogOrder restaurantId={restaurantId} dish={dish} userId={userId} />
+          <DialogOrder
+            restaurantId={restaurantId}
+            dish={dish}
+            userId={userId}
+          />
         </div>
       </div>
     </div>

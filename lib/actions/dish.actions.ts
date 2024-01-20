@@ -2,7 +2,7 @@
 
 import { CreateDishesParams } from "@/types";
 import { handleError, priceParser } from "../utils";
-import { getDishesWeb } from "../fetcher/shopeefood";
+import { getDishesWeb } from "../fetcher/shopeefood/web.api";
 import Dish, { IDish } from "../database/models/dish.model";
 import { connectToDatabase } from "../database";
 
