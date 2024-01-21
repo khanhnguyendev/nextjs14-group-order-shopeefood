@@ -1,4 +1,3 @@
-import { MenuInfo, Restaurant } from "@/types/shopeefood.type";
 import { extractRestaurantUrl, handleError } from "../../utils";
 
 const BASE_URL = "https://gappapi.deliverynow.vn/api";
@@ -77,7 +76,13 @@ export const getDishesApp = async (
       throw new Error("Network response was not OK");
     }
 
-    return await response.json();
+    const data = await response.json();
+    if (!data.reply) {
+      console.log("Error while fetching dishes from ShopeeFood APP");
+      return;
+    }
+
+    return data.reply;
   } catch (error) {
     handleError(error);
   }
@@ -99,8 +104,10 @@ export const getDishesWeb = async (deliveryId: string) => {
     }
 
     const data = await response.json();
-    if (!data.reply)
-      throw new Error("Error while fetching dishes from ShopeeFood");
+    if (!data.reply) {
+      console.log("Error while fetching dishes from ShopeeFood");
+      return;
+    }
 
     return data.reply.menu_infos;
   } catch (error) {
@@ -108,21 +115,12 @@ export const getDishesWeb = async (deliveryId: string) => {
   }
 };
 
-// API Mobile
-// Get topping by dishId
-export const getToppingApp = async (restaurantId: string, dishId: string) => {
+export const getToppingWeb = async () => {
   try {
-    const API = `${BASE_URL}/v5/buyer/store/dish/option_groups?restaurant_id=${restaurantId}&dish_id=${dishId}`;
-
+    const API = "/api/shopeefood/topping";
     const response = await fetch(API, {
       method: "GET",
-      headers: API_HEADERS,
     });
-
-    if (!response.ok) {
-      throw new Error("Network response was not OK");
-    }
-    console.log(await response.json());
 
     return await response.json();
   } catch (error) {

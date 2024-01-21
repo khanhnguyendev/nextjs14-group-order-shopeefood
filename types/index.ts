@@ -1,5 +1,5 @@
 import { IRoom } from "@/lib/database/models/room.model";
-import { MenuInfo, Restaurant } from "./shopeefood.type";
+import { Dish, MenuInfo, Restaurant } from "./shopeefood.type";
 
 // ====== USER PARAMS
 export type CreateUserParams = {
@@ -166,4 +166,29 @@ export type RestaurantDetailProps = {
 export type MenuOrderProps = {
   restaurantId: number;
   menuList: MenuInfo[];
+};
+
+// ====== MENU COLLECTION PROPS
+export type MenuCollectionProps = {
+  restaurantId: number;
+  menuList: MenuInfo[];
+};
+
+// ====== DIALOG ORDER PROPS
+export type DialogOrderProps = {
+  restaurantId: number;
+  dish: Dish;
+  userId: string;
+};
+
+// ====== TOPPING GROUP PROPS
+export type ToppingGroupProps = {
+  restaurantId: number;
+  dishId: number;
+};
+
+// ====== CARD PROPS
+export type CardProps = {
+  restaurantId: number;
+  dish: Dish;
 };
