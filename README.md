@@ -35,4 +35,4 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-![Uploading Screenshot 2024-01-22 at 11.18.52.png…]()
+<img width="1713" alt="Screenshot 2024-01-22 at 11 18 52" src="https://github.com/khanhnguyendev/nextjs14-group-order-shopeefood/assets/44081478/77e4dbbd-819c-4f1b-989a-8f953f9facc5">
