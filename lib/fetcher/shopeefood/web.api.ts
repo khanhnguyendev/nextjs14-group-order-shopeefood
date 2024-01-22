@@ -123,7 +123,7 @@ export const getToppingWeb = async () => {
     });
     const data = await response.json();
 
-    return data.data;
+    return data;
   } catch (error) {
     handleError(error);
   }

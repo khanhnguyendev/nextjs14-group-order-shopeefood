@@ -21,7 +21,6 @@ import { ToppingGroup } from "@/components/common/ToppingGroup";
 export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const dishPrice = dish.price.text;
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>

@@ -32,7 +32,7 @@ export async function GET(req: Request) {
     });
     const data = await response.json();
 
-    return NextResponse.json(data);
+    return NextResponse.json(data.data.option_groups);
   } catch (error) {
     handleError(error);
     return NextResponse.error();

@@ -117,11 +117,29 @@ export type PriceRange = {
   max_price: number;
 };
 
+export type ToppingOption = {
+  name: string;
+  weight: number;
+  price: number;
+  partner_option_id: string;
+  is_active: boolean;
+  rank: number;
+  is_default: boolean;
+  stock_info: {
+    start_time: number;
+    is_out_stocked: boolean;
+    end_time: number;
+  };
+  max_qty: number;
+  group_id: number;
+  id: number;
+};
+
 export type ToppingGroup = {
   min_select: number;
   name: string;
   rank: number;
-  options: Option[];
+  options: ToppingOption[];
   max_select: number;
   id: number;
   partner_option_group_id: string;

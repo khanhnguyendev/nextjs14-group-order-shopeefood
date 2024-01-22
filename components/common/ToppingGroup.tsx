@@ -3,7 +3,7 @@ import { ToppingGroupProps } from "@/types";
 import { useEffect, useState } from "react";
 import { getToppingWeb } from "@/lib/fetcher/shopeefood/web.api";
 import { ToppingGroup } from "@/types/shopeefood.type";
-import RadioButtonGroup from "./RadioButtonGroup";
+import RadioButtonGroup from "./RadioTopping";
 import CheckboxGroup from "./CheckboxGroup";
 
 export function ToppingGroup({ restaurantId, dishId }: ToppingGroupProps) {
@@ -19,10 +19,13 @@ export function ToppingGroup({ restaurantId, dishId }: ToppingGroupProps) {
 
   return (
     <>
-      {/* RADIO GROUP */}
-      <RadioButtonGroup />
-      {/* CHECKBOX */}
-      <CheckboxGroup />
+      {toppings.map((topping: ToppingGroup) => {
+        if (topping.min_select === 1 && topping.max_select === 1) {
+          return <RadioButtonGroup key={topping.id} topping={topping} />;
+        } else {
+          return <CheckboxGroup key={topping.id} topping={topping} />;
+        }
+      })}
     </>
   );
 }
