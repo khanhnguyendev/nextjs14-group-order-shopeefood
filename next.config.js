@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = {};
+
+module.exports = {
   images: {
     // domains: ["images.foody.vn"],
     remotePatterns: [
@@ -10,6 +12,5 @@ const nextConfig = {
       },
     ],
   },
+  reactStrictMode: false,
 };
-
-module.exports = nextConfig;
