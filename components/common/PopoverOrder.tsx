@@ -30,9 +30,7 @@ export function PopoverOrder({ dish, userId }: PopoverOrderProps) {
           <Separator className="my-1" />
           <div className="flex items-center gap-5 text-sm">
             <Image src={dishPhoto.value} width={100} height={100} alt="" />
-            <div>
-              <p>{dish.description}</p>
-            </div>
+            <p>{dish.description}</p>
           </div>
           <Separator className="my-1" />
           <div className="grid gap-2">

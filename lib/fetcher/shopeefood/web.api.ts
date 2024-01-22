@@ -121,8 +121,9 @@ export const getToppingWeb = async () => {
     const response = await fetch(API, {
       method: "GET",
     });
+    const data = await response.json();
 
-    return await response.json();
+    return data.data;
   } catch (error) {
     handleError(error);
   }

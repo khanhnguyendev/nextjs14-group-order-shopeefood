@@ -116,3 +116,13 @@ export type PriceRange = {
   min_price: number;
   max_price: number;
 };
+
+export type ToppingGroup = {
+  min_select: number;
+  name: string;
+  rank: number;
+  options: Option[];
+  max_select: number;
+  id: number;
+  partner_option_group_id: string;
+};

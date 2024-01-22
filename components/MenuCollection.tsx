@@ -1,21 +1,18 @@
 import React from "react";
 import Card from "./common/Card";
 import { Dish, MenuInfo } from "@/types/shopeefood.type";
+import { MenuCollectionProps } from "@/types";
+import { auth } from "@clerk/nextjs";
 
-type MenuCollectionProps = {
-  restaurantId: number;
-  menuList?: MenuInfo[];
-};
+const MenuCollection = ({ restaurantId, menuList }: MenuCollectionProps) => {
+  const { sessionClaims } = auth();
+  const userId = sessionClaims?.userId as string;
 
-const MenuCollection: React.FC<MenuCollectionProps> = ({
-  restaurantId,
-  menuList = [],
-}) => {
   const renderDishes = () => {
     return menuList.map((menu: MenuInfo) => {
-      return menu.dishes.map((dish: Dish) => (
-        <li key={dish.id} className="flex justify-center">
-          <Card restaurantId={restaurantId} dish={dish} />
+      return menu.dishes.map((dish: Dish, index: number) => (
+        <li key={index} className="flex justify-center">
+          <Card key={index} restaurantId={restaurantId} dish={dish} />
         </li>
       ));
     });
