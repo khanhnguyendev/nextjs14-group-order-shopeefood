@@ -192,3 +192,9 @@ export type CardProps = {
   restaurantId: number;
   dish: Dish;
 };
+
+// ====== ORDER FORM PROPS
+export type OrderFormProps = {
+  restaurantId: number;
+  dish: Dish;
+};
