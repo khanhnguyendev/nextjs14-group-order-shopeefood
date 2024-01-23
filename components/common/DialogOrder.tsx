@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DialogOrderProps } from "@/types";
-import { getHighestResolutionPhoto } from "@/lib/utils";
+import { formatPriceVN, getHighestResolutionPhoto } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,22 +49,45 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const dishPrice = dish.price.text;
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("🚀 ~ onSubmit ~ data:", data);
-  }
+  const [selectedOptions, setSelectedOptions] = useState<
+    Array<{ grIndex: number; optIndex: number }>
+  >([]);
 
-  const FormSchema = z.object({
-    items: z.array(z.string()).refine((value) => value.some((item) => item), {
-      message: "You have to select at least one item.",
-    }),
-  });
+  const [total, setTotal] = useState(0);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      items: toppings.filter((item) => item.name).map((item) => item.name),
-    },
-  });
+  const handleOnChange = (grIndex: number, optIndex: number) => {
+    // Check if the option is already selected
+    const isSelected = selectedOptions.some(
+      (option) => option.grIndex === grIndex && option.optIndex === optIndex
+    );
+
+    let newSelectedOptions;
+    if (isSelected) {
+      // If the option is already selected, remove it from the selected options
+      newSelectedOptions = selectedOptions.filter(
+        (option) =>
+          !(option.grIndex === grIndex && option.optIndex === optIndex)
+      );
+    } else {
+      // If the option is not selected, add it to the selected options
+      newSelectedOptions = [...selectedOptions, { grIndex, optIndex }];
+    }
+
+    // Update the selected options state
+    setSelectedOptions(newSelectedOptions);
+  };
+
+  // Calculate the total price whenever the selected options change
+  useEffect(() => {
+    let totalPrice = dish.price.value;
+    selectedOptions.forEach(({ grIndex, optIndex }) => {
+      const selectedPrice = toppings[grIndex].options[optIndex].price;
+      totalPrice += selectedPrice;
+    });
+
+    // Update the total price state
+    setTotal(totalPrice);
+  }, [selectedOptions, toppings, dish.price.value]);
 
   return (
     <>
@@ -78,76 +101,44 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
               Add New Item
             </AlertDialogTitle>
             <AlertDialogDescription>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8"
-                >
-                  <FormField
-                    control={form.control}
-                    name="items"
-                    render={() => (
-                      <FormItem>
-                        {toppings.map((topping) => (
-                          <div key={topping.id} className="w-full ">
-                            <p className="bg-slate-200 p-1 rounded-md">
-                              {topping.name}
-                            </p>
-                            <FormField
-                              key={topping.id}
-                              control={form.control}
-                              name="items"
-                              render={({ field }) => {
-                                return (
-                                  <FormItem
-                                    key={topping.id}
-                                    className="flex flex-col items-start py-2"
-                                  >
-                                    {topping.options.map((option) => {
-                                      return (
-                                        <FormControl key={option.id}>
-                                          <label className="flex gap-2 items-center">
-                                            <Checkbox
-                                              checked={field.value?.includes(
-                                                option.name
-                                              )}
-                                              onCheckedChange={(checked) => {
-                                                return checked
-                                                  ? field.onChange([
-                                                      ...field.value,
-                                                      option.name,
-                                                    ])
-                                                  : field.onChange(
-                                                      field.value?.filter(
-                                                        (value) =>
-                                                          value !== option.name
-                                                      )
-                                                    );
-                                              }}
-                                            />
-                                            {option.name}
-                                          </label>
-                                        </FormControl>
-                                      );
-                                    })}
-                                  </FormItem>
-                                );
-                              }}
+              {toppings.map((topping, grIndex) => (
+                <div key={topping.id} className="w-full ">
+                  <p className="bg-slate-200 p-1 rounded-md">{topping.name}</p>
+                  {topping.options.map(({ name, price }, index) => {
+                    return (
+                      <li key={index}>
+                        <div className="toppings-list-item">
+                          <div className="left-section">
+                            <input
+                              type="checkbox"
+                              id={`custom-checkbox-${index}`}
+                              name={name}
+                              value={name}
+                              checked={selectedOptions.some(
+                                (option) =>
+                                  option.grIndex === grIndex &&
+                                  option.optIndex === index
+                              )}
+                              onChange={() => handleOnChange(grIndex, index)}
                             />
+                            <label htmlFor={`custom-checkbox-${index}`}>
+                              {name}
+                            </label>
                           </div>
-                        ))}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit">Submit</Button>
-                </form>
-              </Form>
+                          <div className="right-section">{price}</div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </div>
+              ))}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Add to Basket - {dishPrice}</AlertDialogAction>
+            <AlertDialogAction>
+              Add to Basket - {formatPriceVN(total)}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

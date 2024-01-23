@@ -31,8 +31,6 @@ export async function GET(req: Request) {
       headers: API_HEADERS,
     });
     const data = await response.json();
-    console.log(data.data.option_groups);
-    console.log(data.data.option_groups[0].options[0]);
 
     return NextResponse.json(data.data.option_groups);
   } catch (error) {
