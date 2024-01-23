@@ -198,3 +198,7 @@ export type OrderFormProps = {
   restaurantId: number;
   dish: Dish;
 };
+
+export type DishDetailProps = {
+  dish: Dish;
+};
