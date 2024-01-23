@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DialogOrderProps } from "@/types";
-import { formatPriceVN } from "@/lib/utils";
+import { formatPriceVN, getHighestResolutionPhoto } from "@/lib/utils";
 
 import {
   AlertDialog,
@@ -16,7 +16,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ToppingGroup } from "@/types/shopeefood.type";
-import DishDetail from "./DishDetail";
+import Image from "next/image";
+import { Input } from "../ui/input";
 
 export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const [selectedOptions, setSelectedOptions] = useState<
@@ -24,6 +25,10 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   >([]);
   const [total, setTotal] = useState(0);
   const [toppings, setToppings] = useState<ToppingGroup[]>([]);
+  const [quantity, setQuantity] = useState(1);
+
+  // Get Dish Photo
+  const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
   // Get Toppings by restauranId and dishId
   const getToppings = async () => {
@@ -37,8 +42,19 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
     setToppings(data);
   };
 
-  const dishPrice = dish.price.text;
+  // Button quantity
+  const increaseQuantity = () => {
+    quantity >= 10 ? setQuantity(10) : setQuantity((pre) => pre + 1);
+  };
+  const decreaseQuantity = () => {
+    quantity <= 0 ? setQuantity(0) : setQuantity((pre) => pre - 1);
+  };
 
+  const handleChangeQuantity = (e: any) => {
+    console.log(e.target.value);
+  };
+
+  // Select toppings
   const handleOnChange = (grIndex: number, optIndex: number) => {
     // Check if the option is already selected
     const isSelected = selectedOptions.some(
@@ -70,15 +86,15 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
     });
 
     // Update the total price state
-    setTotal(totalPrice);
-  }, [selectedOptions, toppings, dish.price.value]);
+    setTotal(totalPrice * quantity);
+  }, [selectedOptions, toppings, dish.price.value, quantity]);
 
   return (
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" onClick={getToppings}>
-            {dishPrice}
+            {dish.price.text}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent className="flex flex-col justify-center items-center bg-white">
@@ -89,7 +105,45 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
             <AlertDialogDescription>
               <div className="flex flex-col">
                 {/* DISH DETAIL */}
-                <DishDetail dish={dish} />
+                <div className="flex flex-row mb-5">
+                  <Image
+                    src={dishPhoto.value}
+                    width={100}
+                    height={100}
+                    alt={dish.name}
+                    className="rounded-2xl"
+                  />
+                  <div className="flex flex-col justify-center items-center gap-2">
+                    <p className="flex flex-col ml-2 justify-start">
+                      {" "}
+                      {dish.description ? dish.description : "No Description"}
+                    </p>
+                    <div className="flex flex-row gap-2">
+                      <Button
+                        disabled={quantity <= 0}
+                        onClick={decreaseQuantity}
+                      >
+                        -
+                      </Button>
+                      <Input
+                        type="number"
+                        name="quantity"
+                        value={quantity}
+                        min={0}
+                        max={10}
+                        onChange={(e) => setQuantity(Number(e.target.value))}
+                      />
+
+                      <Button
+                        disabled={quantity >= 10}
+                        onClick={increaseQuantity}
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
                 {/* TOPPING GROUP */}
                 {toppings?.map((topping, grIndex) => (
                   <div key={topping.id} className="flex flex-col mb-2 w-full">
@@ -155,7 +209,7 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>
+            <AlertDialogAction disabled={quantity === 0} className="bg-red-500">
               Add to Basket +{formatPriceVN(total)}
             </AlertDialogAction>
           </AlertDialogFooter>
