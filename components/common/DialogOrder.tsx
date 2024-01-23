@@ -14,10 +14,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { getToppingWeb } from "@/lib/fetcher/shopeefood/web.api";
+import { toast } from "sonner";
 import { ToppingGroup } from "@/types/shopeefood.type";
 import DishDetail from "./DishDetail";
-import { Separator } from "../ui/separator";
 
 export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const [selectedOptions, setSelectedOptions] = useState<
@@ -26,13 +25,17 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const [total, setTotal] = useState(0);
   const [toppings, setToppings] = useState<ToppingGroup[]>([]);
 
-  useEffect(() => {
-    async function getTopping() {
-      const response: ToppingGroup[] = await getToppingWeb();
-      setToppings(response);
-    }
-    getTopping();
-  }, []);
+  // Get Toppings by restauranId and dishId
+  const getToppings = async () => {
+    const response = await fetch(
+      `/api/shopeefood/topping?restaurantId=${restaurantId}&dishId=${dish.id}`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    setToppings(data);
+  };
 
   const dishPrice = dish.price.text;
 
@@ -74,7 +77,9 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive">{dishPrice}</Button>
+          <Button variant="destructive" onClick={getToppings}>
+            {dishPrice}
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent className="flex flex-col justify-center items-center bg-white">
           <AlertDialogHeader className="w-[90%]">
@@ -86,7 +91,7 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
                 {/* DISH DETAIL */}
                 <DishDetail dish={dish} />
                 {/* TOPPING GROUP */}
-                {toppings.map((topping, grIndex) => (
+                {toppings?.map((topping, grIndex) => (
                   <div key={topping.id} className="flex flex-col mb-2 w-full">
                     <span className="flex justify-start gap-1 bg-slate-200 p-2 rounded-xl">
                       {topping.name}
@@ -95,7 +100,7 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
                       </p>
                     </span>
 
-                    {topping.options.map(({ name, price }, index) => {
+                    {topping.options.map(({ id, name, price }, index) => {
                       return (
                         <li key={index}>
                           <div className="flex items-center justify-between gap-2">
@@ -104,8 +109,8 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
                               topping.max_select == 1 ? (
                                 <input
                                   type="radio"
-                                  id={`custom-checkbox-${index}`}
-                                  name={topping.partner_option_group_id}
+                                  id={id.toString()}
+                                  name={`topping-name-${grIndex}`}
                                   value={name}
                                   checked={selectedOptions.some(
                                     (option) =>
@@ -119,7 +124,7 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
                               ) : (
                                 <input
                                   type="checkbox"
-                                  id={`custom-checkbox-${index}`}
+                                  id={`topping.partner_option_group_id-${index}`}
                                   name={name}
                                   value={name}
                                   checked={selectedOptions.some(
