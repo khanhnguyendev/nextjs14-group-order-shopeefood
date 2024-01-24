@@ -33,7 +33,7 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   // Get Toppings by restauranId and dishId
   const getToppings = async () => {
     const response = await fetch(
-      `/api/shopeefood/topping?restaurantId=${restaurantId}&dishId=${dish.id}`,
+      `/api/shopeefood/topping/${restaurantId}/${dish.id}`,
       {
         method: "GET",
       }

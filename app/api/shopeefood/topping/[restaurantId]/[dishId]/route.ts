@@ -23,11 +23,12 @@ const API_HEADERS = {
   "x-sap-ri": "8d999f658e055397c24c5c22ea7c00a127aba5b1681426b7",
 };
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: Request,
+  { params }: { params: { restaurantId: string; dishId: string } }
+) {
   try {
-    const restaurantId = req.nextUrl.searchParams.get("restaurantId");
-    const dishId = req.nextUrl.searchParams.get("dishId");
-
+    const { restaurantId, dishId } = params;
     if (!restaurantId || !dishId) {
       throw new Error("Missing restaurantId or dishId");
     }
