@@ -31,7 +31,7 @@ const RestaurantDetail = ({ room, restaurant }: RestaurantDetailProps) => {
           alt="restaurant image"
           width={resPhoto.width}
           height={resPhoto.height}
-          className="h-full min-h-[300px] object-cover object-center"
+          className="h-full min-h-[300px] object-cover object-center rounded-2xl"
         />
 
         <div className="flex w-full flex-col gap-8 p-5 md:p-10">
