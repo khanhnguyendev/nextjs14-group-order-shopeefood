@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { DialogOrderProps } from "@/types";
-import { formatPriceVN, getHighestResolutionPhoto } from "@/lib/utils";
+import {
+  formatPriceVN,
+  getHighestResolutionPhoto,
+  handleError,
+} from "@/lib/utils";
 
 import {
   AlertDialog,
@@ -15,9 +19,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { ToppingGroup } from "@/types/shopeefood.type";
+import { ToppingGroup, ToppingOption } from "@/types/shopeefood.type";
 import Image from "next/image";
 import { Input } from "../ui/input";
+import { createOrder } from "@/lib/actions/order.actions";
 
 export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
   const [selectedOptions, setSelectedOptions] = useState<
@@ -75,6 +80,30 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
 
     // Update the selected options state
     setSelectedOptions(newSelectedOptions);
+  };
+
+  const addToBasket = () => {
+    try {
+      let toppingGroups: ToppingOption[] = [];
+      selectedOptions.forEach(({ grIndex, optIndex }) => {
+        toppingGroups.push(toppings[grIndex].options[optIndex]);
+      });
+
+      const createOrderPromise = createOrder({
+        userId: userId,
+        restaurantId,
+        dish: dish,
+        quantity,
+        toppings: toppingGroups,
+      });
+      toast.promise(createOrderPromise, {
+        loading: "Processing your order...",
+        success: "Your order has been placed.",
+        error: "Failed to place your order",
+      });
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   // Calculate the total price whenever the selected options change
@@ -209,7 +238,11 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction disabled={quantity === 0} className="bg-red-500">
+            <AlertDialogAction
+              disabled={quantity === 0}
+              className="bg-red-500"
+              onClick={() => addToBasket()}
+            >
               Add to Basket +{formatPriceVN(total)}
             </AlertDialogAction>
           </AlertDialogFooter>

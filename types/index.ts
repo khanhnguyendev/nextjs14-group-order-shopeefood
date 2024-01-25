@@ -1,5 +1,5 @@
 import { IRoom } from "@/lib/database/models/room.model";
-import { Dish, MenuInfo, Restaurant } from "./shopeefood.type";
+import { Dish, MenuInfo, Restaurant, ToppingOption } from "./shopeefood.type";
 
 // ====== USER PARAMS
 export type CreateUserParams = {
@@ -39,93 +39,6 @@ export type CreateRestaurantParams = {
 export type CreateDishesParams = {
   restaurantId: string;
   deliveryId: string;
-};
-
-export type UpdateEventParams = {
-  userId: string;
-  event: {
-    _id: string;
-    title: string;
-    imageUrl: string;
-    description: string;
-    location: string;
-    startDateTime: Date;
-    endDateTime: Date;
-    categoryId: string;
-    price: string;
-    isFree: boolean;
-    url: string;
-  };
-  path: string;
-};
-
-export type DeleteEventParams = {
-  eventId: string;
-  path: string;
-};
-
-export type GetAllEventsParams = {
-  query: string;
-  category: string;
-  limit: number;
-  page: number;
-};
-
-export type GetEventsByUserParams = {
-  userId: string;
-  limit?: number;
-  page: number;
-};
-
-export type GetRelatedEventsByCategoryParams = {
-  categoryId: string;
-  eventId: string;
-  limit?: number;
-  page: number | string;
-};
-
-export type Event = {
-  _id: string;
-  title: string;
-  description: string;
-  price: string;
-  isFree: boolean;
-  imageUrl: string;
-  location: string;
-  startDateTime: Date;
-  endDateTime: Date;
-  url: string;
-  organizer: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-  };
-  category: {
-    _id: string;
-    name: string;
-  };
-};
-
-// ====== CATEGORY PARAMS
-export type CreateCategoryParams = {
-  categoryName: string;
-};
-
-// ====== ORDER PARAMS
-export type CheckoutOrderParams = {
-  eventTitle: string;
-  eventId: string;
-  price: string;
-  isFree: boolean;
-  buyerId: string;
-};
-
-export type CreateOrderParams = {
-  stripeId: string;
-  eventId: string;
-  buyerId: string;
-  totalAmount: string;
-  createdAt: Date;
 };
 
 export type GetOrdersByEventParams = {
@@ -199,6 +112,16 @@ export type OrderFormProps = {
   dish: Dish;
 };
 
+// ====== DISH DETAIL PROPS
 export type DishDetailProps = {
   dish: Dish;
+};
+
+// ====== CREATE ORDER PARAMS
+export type CreateOrderParams = {
+  userId: string;
+  restaurantId: number;
+  dish: Dish;
+  toppings: ToppingOption[];
+  quantity: number;
 };
