@@ -75,13 +75,6 @@ export type RestaurantDetailProps = {
   restaurant: Restaurant;
 };
 
-// ====== MENU & ORDER PROPS
-export type MenuOrderProps = {
-  roomId: string;
-  restaurantId: number;
-  menuList: MenuInfo[];
-};
-
 // ====== MENU COLLECTION PROPS
 export type MenuCollectionProps = {
   roomId: string;
@@ -103,13 +96,6 @@ export type ToppingGroupProps = {
   dishId: number;
 };
 
-// ====== CARD PROPS
-export type CardProps = {
-  roomId: string;
-  restaurantId: number;
-  dish: Dish;
-};
-
 // ====== ORDER FORM PROPS
 export type OrderFormProps = {
   restaurantId: number;
@@ -129,4 +115,10 @@ export type CreateOrderParams = {
   _dish: Dish;
   _toppings: ToppingOption[];
   _quantity: number;
+  _note: string;
+};
+
+// ====== GET ALL ORDER PARAMS
+export type GetAllOrderParams = {
+  _roomId: string;
 };

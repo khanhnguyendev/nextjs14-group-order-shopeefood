@@ -17,8 +17,8 @@ const RoomSchema = new Schema({
   createAt: { type: Date, default: Date.now() },
   expiredAt: { type: Date, default: Date.now() + 3 * 60 * 60 * 1000 }, // Set default to 3 hours from now
   hostedBy: { type: String, required: true },
-  restaurantId: { type: Number, required: true },
-  deliveryId: { type: Number, required: true },
+  restaurantId: { type: Number, required: true, index: true },
+  deliveryId: { type: Number, required: true, index: true },
   restaurantUrl: { type: String, required: true },
 });
 

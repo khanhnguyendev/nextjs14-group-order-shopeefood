@@ -23,6 +23,7 @@ import { ToppingGroup, ToppingOption } from "@/types/shopeefood.type";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { createOrder } from "@/lib/actions/order.actions";
+import { Separator } from "../ui/separator";
 
 export function DialogOrder({
   roomId,
@@ -36,6 +37,7 @@ export function DialogOrder({
   const [total, setTotal] = useState(0);
   const [toppings, setToppings] = useState<ToppingGroup[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const [note, setNote] = useState("");
 
   // Get Dish Photo
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
@@ -87,6 +89,11 @@ export function DialogOrder({
     setSelectedOptions(newSelectedOptions);
   };
 
+  // Input note
+  const handleInputNote = (note: string) => {
+    setNote(note);
+  };
+
   const addToBasket = () => {
     try {
       let toppingGroups: ToppingOption[] = [];
@@ -101,6 +108,7 @@ export function DialogOrder({
         _dish: dish,
         _quantity: quantity,
         _toppings: toppingGroups,
+        _note: note,
       });
       toast.promise(createOrderPromise, {
         loading: "Processing your order...",
@@ -239,6 +247,13 @@ export function DialogOrder({
                     })}
                   </div>
                 ))}
+
+                <Separator className="my-5" />
+                {/* NOTE */}
+                <Input
+                  placeholder="Note..."
+                  onChange={(e) => handleInputNote(e.target.value)}
+                />
               </div>
             </AlertDialogDescription>
           </AlertDialogHeader>

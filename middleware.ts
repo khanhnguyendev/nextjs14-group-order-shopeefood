@@ -7,7 +7,7 @@ export default authMiddleware({
     "/api/webhook/clerk",
     "api/shopeefood/:path*",
   ],
-  ignoredRoutes: ["/api/webhook/clerk", "api/shopeefood/:path*"],
+  ignoredRoutes: ["/api/webhook/clerk"],
 });
 
 export const config = {

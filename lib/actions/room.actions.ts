@@ -3,9 +3,7 @@
 import { CreateRoomParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
-import User from "../database/models/user.model";
 import { getFromUrl } from "../fetcher/shopeefood/web.api";
-import { createRestaurant } from "./restaurant.actions";
 import Room from "../database/models/room.model";
 
 /**

@@ -75,13 +75,15 @@ export interface IOrder extends Document {
 }
 
 const OrderSchema = new Schema({
-  roomId: { type: String, required: true },
-  restaurantId: { type: Number, required: true },
+  roomId: { type: String, required: true, index: true },
+  restaurantId: { type: Number, required: true, index: true },
+  orderBy: { type: String, required: true, index: true },
   dish: { type: DishSchema, require: true },
   toppings: [ToppingOptionSchema],
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   totalPrice: { type: Number, required: true },
+  note: { type: String },
 });
 
 const Order = models.Order || model("Order", OrderSchema);

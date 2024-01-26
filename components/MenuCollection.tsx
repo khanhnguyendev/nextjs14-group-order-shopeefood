@@ -18,9 +18,10 @@ const MenuCollection = ({
         <li key={index} className="flex justify-center">
           <Card
             key={index}
-            roomId={roomId}
-            restaurantId={restaurantId}
-            dish={dish}
+            _roomId={roomId}
+            _userId={userId}
+            _restaurantId={restaurantId}
+            _dish={dish}
           />
         </li>
       ));

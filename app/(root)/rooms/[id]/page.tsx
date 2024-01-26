@@ -9,6 +9,8 @@ import { MenuInfo, Restaurant } from "@/types/shopeefood.type";
 import { IRoom } from "@/lib/database/models/room.model";
 import RestaurantDetail from "@/components/common/RestaurantDetail";
 import MenuOrder from "@/components/common/MenuOrder";
+import { getAllOrders } from "@/lib/actions/order.actions";
+import { IOrder } from "@/lib/database/models/order.model";
 
 const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
   const room: IRoom = await getRoomById(id);
@@ -19,7 +21,7 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
   );
 
   // Fetch the menu list
-  const menuList: MenuInfo[] = await getDishesWeb(room.deliveryId.toString());
+  const menus: MenuInfo[] = await getDishesWeb(room.deliveryId.toString());
 
   return (
     <>
@@ -27,9 +29,9 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
       <RestaurantDetail room={room} restaurant={restaurant} />
       {/* MENU & ORDER */}
       <MenuOrder
-        roomId={room._id}
-        restaurantId={room.restaurantId}
-        menuList={menuList}
+        _roomId={room._id}
+        _restaurantId={room.restaurantId}
+        _menus={menus}
       />
     </>
   );

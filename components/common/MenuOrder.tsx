@@ -1,9 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MenuCollection from "@/components/MenuCollection";
 import OrderCollection from "@/components/OrderCollection";
-import { MenuOrderProps } from "@/types";
+import { MenuOrderProps } from "@/types/props.type";
 
-const MenuOrder = ({ roomId, restaurantId, menuList }: MenuOrderProps) => {
+const MenuOrder = ({ _roomId, _restaurantId, _menus }: MenuOrderProps) => {
   return (
     <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
       <Tabs defaultValue="tab-menu">
@@ -17,14 +17,14 @@ const MenuOrder = ({ roomId, restaurantId, menuList }: MenuOrderProps) => {
           {/* MENU */}
           <TabsContent value="tab-menu">
             <MenuCollection
-              roomId={roomId}
-              restaurantId={restaurantId}
-              menuList={menuList}
+              roomId={_roomId}
+              restaurantId={_restaurantId}
+              menuList={_menus}
             />
           </TabsContent>
           {/* ORDER */}
           <TabsContent value="tab-order">
-            <OrderCollection />
+            <OrderCollection _roomId={_roomId} />
           </TabsContent>
         </div>
       </Tabs>
