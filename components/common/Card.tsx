@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import { DialogOrder } from "./DialogOrder";
 
-const Card = ({ restaurantId, dish }: CardProps) => {
+const Card = ({ roomId, restaurantId, dish }: CardProps) => {
   const dishPhoto = getHighestResolutionPhoto(dish.photos);
 
   return (
@@ -35,6 +35,7 @@ const Card = ({ restaurantId, dish }: CardProps) => {
         </Accordion>
         <div className="flex justify-center mt-3">
           <DialogOrder
+            roomId={roomId}
             restaurantId={restaurantId}
             dish={dish}
             userId={"userId"}

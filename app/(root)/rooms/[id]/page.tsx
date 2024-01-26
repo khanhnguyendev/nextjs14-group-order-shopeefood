@@ -26,7 +26,11 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
       {/* RESTAURANT INFO */}
       <RestaurantDetail room={room} restaurant={restaurant} />
       {/* MENU & ORDER */}
-      <MenuOrder restaurantId={room.restaurantId} menuList={menuList} />
+      <MenuOrder
+        roomId={room._id}
+        restaurantId={room.restaurantId}
+        menuList={menuList}
+      />
     </>
   );
 };

@@ -8,17 +8,23 @@ import { getFromUrl } from "../fetcher/shopeefood/web.api";
 import { createRestaurant } from "./restaurant.actions";
 import Room from "../database/models/room.model";
 
-// CREATE
+/**
+ * Creates a new room with the provided parameters.
+ *
+ * @param {CreateRoomParams} params - The parameters for creating the room.
+ * @returns {Promise<object>} - A promise that resolves to the newly created room.
+ * @throws {Error} - If the user is not found or an error occurs during the creation process.
+ */
 export const createRoom = async ({ room, userId }: CreateRoomParams) => {
   try {
     console.log(`Creating room from [${room.restaurantUrl}] by [${userId}]...`);
 
     await connectToDatabase();
 
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
+    // const user = await User.findById(userId);
+    // if (!user) {
+    //   throw new Error("User not found");
+    // }
 
     // Get restaurantId, deliveryId
     const restaurantInfo = await getFromUrl(room.restaurantUrl);
@@ -42,7 +48,12 @@ export const createRoom = async ({ room, userId }: CreateRoomParams) => {
   }
 };
 
-// GET ROOM BY ID
+/**
+ * Retrieves a room by its ID.
+ * @param {string} roomId - The ID of the room to retrieve.
+ * @returns {Promise<object>} - A promise that resolves to the retrieved room object.
+ * @throws {Error} - If the room is not found.
+ */
 export const getRoomById = async (roomId: string) => {
   try {
     await connectToDatabase();

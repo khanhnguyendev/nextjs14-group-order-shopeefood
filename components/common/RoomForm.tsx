@@ -24,6 +24,7 @@ import { handleError } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { createRoom } from "@/lib/actions/room.actions";
 import { toast } from "sonner";
+import { IRoom } from "@/lib/database/models/room.model";
 
 type RoomFormProps = {
   userId: string;
@@ -39,25 +40,35 @@ const RoomForm = ({ userId, type }: RoomFormProps) => {
     defaultValues: initialValues,
   });
 
+  /**
+   * Handles the form submission for creating a room.
+   *
+   * @param values - The values submitted in the form.
+   * @returns A Promise that resolves to a success message if the room is created successfully.
+   * @throws An error if there is a failure in creating the room.
+   */
   async function onSubmit(values: z.infer<typeof roomFormSchema>) {
     if (type === "Create") {
       try {
-        toast.loading("Create new room...");
-        const newRoom = await createRoom({
+        const createRoomPromise = createRoom({
           room: { ...values },
           userId: userId,
         });
-
-        if (newRoom) {
-          form.reset();
-          router.push(`/rooms/${newRoom._id}`);
-          toast.success("Room has been created.");
-        }
+        toast.promise(createRoomPromise, {
+          loading: "Creating room...",
+          success: (newRoom: IRoom) => {
+            form.reset();
+            router.push(`/rooms/${newRoom._id}`);
+            return "Room has been created.";
+          },
+          error: "Failed to create room",
+        });
       } catch (error) {
         handleError(error);
       }
     }
   }
+
   return (
     <Form {...form}>
       <form
