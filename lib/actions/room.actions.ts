@@ -21,10 +21,10 @@ export const createRoom = async ({ room, userId }: CreateRoomParams) => {
 
     await connectToDatabase();
 
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
+    // const user = await User.findById(userId);
+    // if (!user) {
+    //   throw new Error("User not found");
+    // }
 
     // Get restaurantId, deliveryId
     const restaurantInfo = await getFromUrl(room.restaurantUrl);
