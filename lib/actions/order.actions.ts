@@ -3,18 +3,18 @@
 import { CreateOrderParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
-import User from "../database/models/user.model";
 import Order from "../database/models/order.model";
 
 export const createOrder = async ({
-  restaurantId,
-  userId,
-  dish,
-  toppings,
-  quantity,
+  _roomId,
+  _restaurantId,
+  _userId,
+  _dish,
+  _toppings,
+  _quantity,
 }: CreateOrderParams) => {
   try {
-    console.log(`Creating order from [${restaurantId}] by [${userId}]...`);
+    console.log(`Creating order from [${_restaurantId}] by [${_userId}]...`);
 
     await connectToDatabase();
 
@@ -23,15 +23,23 @@ export const createOrder = async ({
     //   throw new Error("User not found");
     // }
 
+    const calculateTotalPrice = () => {
+      let _totalPrice = Number(_dish.price.value) * _quantity;
+      _toppings.forEach((topping) => {
+        _totalPrice += Number(topping.price) * _quantity;
+      });
+      return _totalPrice;
+    };
+
     const newOrder = await Order.create({
-      // roomId: "65b2424573acf021571b8a83",
-      restaurantId,
-      userId,
-      dish,
-      toppings,
-      quantity,
-      price: dish.price.value as Number,
-      totalPrice: Number(dish.price.value) * quantity,
+      roomId: _roomId,
+      restaurantId: _restaurantId,
+      userId: _userId,
+      dish: _dish,
+      toppings: _toppings,
+      quantity: _quantity,
+      price: _dish.price.value as Number,
+      totalPrice: calculateTotalPrice(),
     });
 
     console.log(`Order created sucessfully with id [${newOrder._id}]!`);

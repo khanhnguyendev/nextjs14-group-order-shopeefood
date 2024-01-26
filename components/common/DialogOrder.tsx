@@ -24,7 +24,12 @@ import Image from "next/image";
 import { Input } from "../ui/input";
 import { createOrder } from "@/lib/actions/order.actions";
 
-export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
+export function DialogOrder({
+  roomId,
+  restaurantId,
+  dish,
+  userId,
+}: DialogOrderProps) {
   const [selectedOptions, setSelectedOptions] = useState<
     Array<{ grIndex: number; optIndex: number }>
   >([]);
@@ -90,11 +95,12 @@ export function DialogOrder({ restaurantId, dish, userId }: DialogOrderProps) {
       });
 
       const createOrderPromise = createOrder({
-        userId: userId,
-        restaurantId,
-        dish: dish,
-        quantity,
-        toppings: toppingGroups,
+        _roomId: roomId,
+        _userId: userId,
+        _restaurantId: restaurantId,
+        _dish: dish,
+        _quantity: quantity,
+        _toppings: toppingGroups,
       });
       toast.promise(createOrderPromise, {
         loading: "Processing your order...",

@@ -4,7 +4,11 @@ import { Dish, MenuInfo } from "@/types/shopeefood.type";
 import { MenuCollectionProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 
-const MenuCollection = ({ restaurantId, menuList }: MenuCollectionProps) => {
+const MenuCollection = ({
+  roomId,
+  restaurantId,
+  menuList,
+}: MenuCollectionProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
 
@@ -12,7 +16,12 @@ const MenuCollection = ({ restaurantId, menuList }: MenuCollectionProps) => {
     return menuList.map((menu: MenuInfo) => {
       return menu.dishes.map((dish: Dish, index: number) => (
         <li key={index} className="flex justify-center">
-          <Card key={index} restaurantId={restaurantId} dish={dish} />
+          <Card
+            key={index}
+            roomId={roomId}
+            restaurantId={restaurantId}
+            dish={dish}
+          />
         </li>
       ));
     });

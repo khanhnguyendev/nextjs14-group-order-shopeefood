@@ -75,10 +75,10 @@ export interface IOrder extends Document {
 }
 
 const OrderSchema = new Schema({
-  // roomId: { type: Number, required: true },
+  roomId: { type: String, required: true },
   restaurantId: { type: Number, required: true },
   dish: { type: DishSchema, require: true },
-  toppings: [ToppingGroupSchema],
+  toppings: [ToppingOptionSchema],
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   totalPrice: { type: Number, required: true },

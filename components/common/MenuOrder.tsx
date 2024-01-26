@@ -3,7 +3,7 @@ import MenuCollection from "@/components/MenuCollection";
 import OrderCollection from "@/components/OrderCollection";
 import { MenuOrderProps } from "@/types";
 
-const MenuOrder = ({ restaurantId, menuList }: MenuOrderProps) => {
+const MenuOrder = ({ roomId, restaurantId, menuList }: MenuOrderProps) => {
   return (
     <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
       <Tabs defaultValue="tab-menu">
@@ -16,7 +16,11 @@ const MenuOrder = ({ restaurantId, menuList }: MenuOrderProps) => {
         <div className="mt-5 bg-slate-100 p-5 bg-contain rounded-2xl">
           {/* MENU */}
           <TabsContent value="tab-menu">
-            <MenuCollection restaurantId={restaurantId} menuList={menuList} />
+            <MenuCollection
+              roomId={roomId}
+              restaurantId={restaurantId}
+              menuList={menuList}
+            />
           </TabsContent>
           {/* ORDER */}
           <TabsContent value="tab-order">
