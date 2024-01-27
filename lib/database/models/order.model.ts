@@ -1,6 +1,6 @@
 import { Document, Schema, model, models } from "mongoose";
 
-const PriceSchema = new Schema(
+export const PriceSchema = new Schema(
   {
     value: Number,
     text: String,
@@ -9,7 +9,7 @@ const PriceSchema = new Schema(
   { _id: false }
 );
 
-const PhotoSchema = new Schema(
+export const PhotoSchema = new Schema(
   {
     width: { type: Number },
     value: { type: String },
@@ -18,7 +18,7 @@ const PhotoSchema = new Schema(
   { _id: false }
 );
 
-const DishSchema = new Schema(
+export const DishSchema = new Schema(
   {
     isDeleted: Boolean,
     description: String,
@@ -35,7 +35,7 @@ const DishSchema = new Schema(
   { _id: false }
 );
 
-const ToppingOptionSchema = new Schema(
+export const ToppingOptionSchema = new Schema(
   {
     name: String,
     weight: Number,
@@ -51,7 +51,7 @@ const ToppingOptionSchema = new Schema(
   { _id: false }
 );
 
-const ToppingGroupSchema = new Schema(
+export const ToppingGroupSchema = new Schema(
   {
     minSelect: Number,
     name: String,
@@ -67,10 +67,34 @@ const ToppingGroupSchema = new Schema(
 export interface IOrder extends Document {
   roomId: number;
   restaurantId: number;
-  dish: typeof DishSchema;
+  orderBy: string;
+  dish: {
+    isDeleted: Boolean;
+    description: String;
+    name: String;
+    price: {
+      value: Number;
+      text: String;
+      unit: String;
+    };
+    isActive: Boolean;
+    totalLike: String;
+    photos: [
+      {
+        width: { type: Number };
+        value: { type: String };
+        height: { type: Number };
+      }
+    ];
+    isAvailable: Boolean;
+    id: Number;
+    displayOrder: Number;
+    quantity: Number;
+  };
   toppings: (typeof ToppingGroupSchema)[];
   quantity: number;
   price: number;
+  note: string;
   totalPrice: number;
 }
 
