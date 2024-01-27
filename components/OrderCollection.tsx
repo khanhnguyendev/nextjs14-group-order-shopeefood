@@ -14,12 +14,16 @@ const OrderCollection = ({ _roomId }: OrderCollectionProps) => {
     cluster: "ap1",
   });
   var channel = pusher.subscribe(_roomId);
-  channel.bind("new-order", async function (data: any) {
-    const order: IOrder = JSON.parse(data.message);
-    const newestOrders: IOrder[] = await getAllOrders({ _roomId: _roomId });
-    setOrders(newestOrders);
-    toast.success(order.orderBy + " ordered " + order.dish.name);
-  });
+  channel.bind(
+    "new-order",
+    async function (data: any) {
+      const order: IOrder = JSON.parse(data.message);
+      const newestOrders: IOrder[] = await getAllOrders({ _roomId: _roomId });
+      setOrders(newestOrders);
+      toast.success(order.orderBy + " ordered " + order.dish.name);
+    },
+    channel.unbind() // fix duplicate event callback
+  );
 
   useEffect(() => {
     const fetchOrders = async () => {
