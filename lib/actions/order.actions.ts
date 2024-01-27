@@ -4,16 +4,18 @@ import { CreateOrderParams, GetAllOrderParams } from "@/types";
 import { handleError } from "../utils";
 import { connectToDatabase } from "../database";
 import Order from "../database/models/order.model";
+import { pusher } from "../pusher";
 
 /**
  * Creates a new order.
  *
- * @param _roomId - The ID of the room.
- * @param _restaurantId - The ID of the restaurant.
- * @param _userId - The ID of the user.
- * @param _dish - The dish details.
- * @param _toppings - The toppings for the dish.
- * @param _quantity - The quantity of the dish.
+ * @param _roomId - The ID of the room where the order is placed.
+ * @param _restaurantId - The ID of the restaurant where the order is placed.
+ * @param _userId - The ID of the user who placed the order.
+ * @param _dish - The dish ordered.
+ * @param _toppings - The toppings added to the dish.
+ * @param _quantity - The quantity of the dish ordered.
+ * @param _note - Additional notes for the order.
  * @returns The newly created order.
  */
 export const createOrder = async ({
@@ -53,6 +55,11 @@ export const createOrder = async ({
       price: _dish.price.value as Number,
       totalPrice: calculateTotalPrice(),
       note: _note,
+    });
+
+    // Send to MenuOrder component
+    pusher.trigger(_roomId, "new-order", {
+      message: JSON.stringify(newOrder),
     });
 
     console.log(`Order created sucessfully with id [${newOrder._id}]!`);

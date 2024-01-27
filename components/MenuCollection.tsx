@@ -1,26 +1,23 @@
 import React from "react";
 import Card from "./common/Card";
 import { Dish, MenuInfo } from "@/types/shopeefood.type";
-import { MenuCollectionProps } from "@/types";
-import { auth } from "@clerk/nextjs";
+import { MenuCollectionProps } from "@/types/props.type";
 
 const MenuCollection = ({
-  roomId,
-  restaurantId,
-  menuList,
+  _roomId,
+  _restaurantId,
+  _userId,
+  _menuList,
 }: MenuCollectionProps) => {
-  const { sessionClaims } = auth();
-  const userId = sessionClaims?.userId as string;
-
   const renderDishes = () => {
-    return menuList.map((menu: MenuInfo) => {
+    return _menuList.map((menu: MenuInfo) => {
       return menu.dishes.map((dish: Dish, index: number) => (
         <li key={index} className="flex justify-center">
           <Card
             key={index}
-            _roomId={roomId}
-            _userId={userId}
-            _restaurantId={restaurantId}
+            _roomId={_roomId}
+            _restaurantId={_restaurantId}
+            _userId={_userId}
             _dish={dish}
           />
         </li>
@@ -30,7 +27,7 @@ const MenuCollection = ({
 
   return (
     <>
-      {menuList.length > 0 ? (
+      {_menuList.length > 0 ? (
         <div className="flex flex-col items-center gap-10">
           <ul className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-10">
             {renderDishes()}

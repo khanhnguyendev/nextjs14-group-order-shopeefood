@@ -1,6 +1,14 @@
 import { IOrder } from "@/lib/database/models/order.model";
 import { Dish, MenuInfo } from "./shopeefood.type";
 
+// ====== MENU COLLECTION PROPS
+export type MenuCollectionProps = {
+  _roomId: string;
+  _restaurantId: number;
+  _userId: string;
+  _menuList: MenuInfo[];
+};
+
 // ====== CARD PROPS
 export type CardProps = {
   _roomId: string;
@@ -13,6 +21,7 @@ export type CardProps = {
 export type MenuOrderProps = {
   _roomId: string;
   _restaurantId: number;
+  _userId: string;
   _menus: MenuInfo[];
 };
 

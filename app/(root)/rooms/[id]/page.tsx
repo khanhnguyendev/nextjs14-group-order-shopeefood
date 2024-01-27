@@ -9,10 +9,13 @@ import { MenuInfo, Restaurant } from "@/types/shopeefood.type";
 import { IRoom } from "@/lib/database/models/room.model";
 import RestaurantDetail from "@/components/common/RestaurantDetail";
 import MenuOrder from "@/components/common/MenuOrder";
-import { getAllOrders } from "@/lib/actions/order.actions";
-import { IOrder } from "@/lib/database/models/order.model";
+import { auth } from "@clerk/nextjs";
 
 const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
+  const { sessionClaims } = auth();
+  const userId = sessionClaims?.userId as string;
+
+  // Fetch the room details
   const room: IRoom = await getRoomById(id);
 
   // Fetch the restaurant details
@@ -31,6 +34,7 @@ const DetailRoom = async ({ params: { id } }: SearchParamProps) => {
       <MenuOrder
         _roomId={room._id}
         _restaurantId={room.restaurantId}
+        _userId={userId}
         _menus={menus}
       />
     </>
