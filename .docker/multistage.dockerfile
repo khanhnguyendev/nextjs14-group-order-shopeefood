@@ -1,38 +1,34 @@
-# Build BASE
-FROM node:16-alpine as BASE
+# Install dependencies only when needed
+FROM node:20-alpine AS deps
 LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
 
-WORKDIR /appp
-COPY package.json yarn.lock ./
-RUN apk add --no-cache git \
-    && yarn install --frozen-lockfile \
-    && yarn cache clean
+WORKDIR /app
+COPY package.json ./
+RUN yarn install --frozen-lockfile
 
-# Build Image
-FROM ductn4/node:16-alpine AS BUILD
+# Rebuild the source code only when needed
+FROM node:20-alpine AS builder
 LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
-
-WORKDIR /appp
-COPY --from=BASE /appp/node_modules ./node_modules
+WORKDIR /app
 COPY . .
-RUN apk add --no-cache git curl \
-    && yarn build \
-    && rm -rf node_modules \
-    && yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline \
-    && node-prune
+COPY --from=deps /app/node_modules ./node_modules
+RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
-# Build production
-FROM node:16-alpine AS PRODUCTION
+# Production image, copy all the files and run next
+FROM node:20-alpine AS runner
 LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
+WORKDIR /app
 
-WORKDIR /appp
+ENV NODE_ENV production
 
-COPY --from=BUILD /appp/package.json /appp/yarn.lock ./
-COPY --from=BUILD /appp/node_modules ./node_modules
-COPY --from=BUILD /appp/.next ./.next
-COPY --from=BUILD /appp/public ./public
-COPY --from=BUILD /appp/next.config.js ./
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
 
-EXPOSE 3000
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+USER nextjs
 
 CMD ["yarn", "start"]

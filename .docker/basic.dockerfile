@@ -3,7 +3,7 @@ LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
 
 WORKDIR /appp
 
-COPY package.json yarn.lock ./
+COPY package.json ./
 RUN apk add --no-cache git \
   && yarn install --frozen-lockfile \
   && yarn cache clean
