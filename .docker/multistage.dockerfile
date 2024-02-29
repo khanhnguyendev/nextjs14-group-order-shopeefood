@@ -1,19 +1,22 @@
 # Install dependencies only when needed
-FROM --platform=linux/amd64 node:20-alpine AS deps
+FROM node:20-alpine AS deps
+LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
 
 WORKDIR /app
 COPY package.json ./
 RUN yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM --platform=linux/amd64 node:20-alpine AS builder
+FROM node:20-alpine AS builder
+LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
-FROM --platform=linux/amd64 node:20-alpine AS runner
+FROM node:20-alpine AS runner
+LABEL author="khanhnguyendev <khanhnguyen.vlu@gmail.com>"
 WORKDIR /app
 
 ENV NODE_ENV production

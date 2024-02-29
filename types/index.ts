@@ -75,6 +75,13 @@ export type RestaurantDetailProps = {
   restaurant: Restaurant;
 };
 
+// ====== MENU COLLECTION PROPS
+export type MenuCollectionProps = {
+  roomId: string;
+  restaurantId: number;
+  menuList: MenuInfo[];
+};
+
 // ====== DIALOG ORDER PROPS
 export type DialogOrderProps = {
   roomId: string;
